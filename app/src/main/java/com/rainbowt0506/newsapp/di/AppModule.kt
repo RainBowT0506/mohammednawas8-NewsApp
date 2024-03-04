@@ -3,9 +3,9 @@ package com.rainbowt0506.newsapp.di
 import android.app.Application
 import com.rainbowt0506.newsapp.data.manger.LocalUserMangerImpl
 import com.rainbowt0506.newsapp.domain.manger.LocalUserManger
-import com.rainbowt0506.newsapp.domain.usecases.AppEntryUseCases
-import com.rainbowt0506.newsapp.domain.usecases.ReadAppEntry
-import com.rainbowt0506.newsapp.domain.usecases.SaveAppEntry
+import com.rainbowt0506.newsapp.domain.usecases.app_entry.AppEntryUseCases
+import com.rainbowt0506.newsapp.domain.usecases.app_entry.ReadAppEntry
+import com.rainbowt0506.newsapp.domain.usecases.app_entry.SaveAppEntry
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
