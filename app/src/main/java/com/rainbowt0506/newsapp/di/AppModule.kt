@@ -11,6 +11,7 @@ import com.rainbowt0506.newsapp.domain.usecases.app_entry.ReadAppEntry
 import com.rainbowt0506.newsapp.domain.usecases.app_entry.SaveAppEntry
 import com.rainbowt0506.newsapp.domain.usecases.news.GetNews
 import com.rainbowt0506.newsapp.domain.usecases.news.NewsUseCase
+import com.rainbowt0506.newsapp.domain.usecases.news.SearchNews
 import com.rainbowt0506.newsapp.util.Constants.BASE_URL
 import dagger.Module
 import dagger.Provides
@@ -62,7 +63,8 @@ object AppModule {
         newsRepository: NewsRepository
     ): NewsUseCase {
         return NewsUseCase(
-            getNews = GetNews(newsRepository)
+            getNews = GetNews(newsRepository),
+            searchNews = SearchNews(newsRepository)
         )
     }
 }

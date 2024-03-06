@@ -27,7 +27,7 @@ import com.rainbowt0506.newsapp.domain.model.Article
 import com.rainbowt0506.newsapp.presentation.Dimens.MediumPadding1
 import com.rainbowt0506.newsapp.presentation.common.ArticlesList
 import com.rainbowt0506.newsapp.presentation.common.SearchBar
-import com.rainbowt0506.newsapp.presentation.onboarding.navgraph.Route
+import com.rainbowt0506.newsapp.presentation.navgraph.Route
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

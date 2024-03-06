@@ -1,4 +1,4 @@
-package com.rainbowt0506.newsapp.presentation.onboarding.navgraph
+package com.rainbowt0506.newsapp.presentation.navgraph
 
 sealed class Route(
     val route: String
