@@ -15,6 +15,24 @@ import com.rainbowt0506.newsapp.presentation.Dimens.ExtraSmallPadding2
 import com.rainbowt0506.newsapp.presentation.Dimens.MediumPadding1
 import kotlin.contracts.SimpleEffect
 
+@Composable
+fun ArticlesList(
+    modifier: Modifier = Modifier,
+    articles: List<Article>,
+    onClick: (Article) -> Unit
+) {
+    LazyColumn(
+        modifier = modifier.fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(MediumPadding1),
+        contentPadding = PaddingValues(all = ExtraSmallPadding2)
+    ) {
+        items(count = articles.size) {
+            val article = articles[it]
+            ArticleCard(article = article, onClick = { onClick(article) })
+        }
+    }
+}
+
 
 @Composable
 fun ArticlesList(
@@ -25,7 +43,7 @@ fun ArticlesList(
     val handlePagingResult = handlePagingResult(articles = articles)
     if (handlePagingResult) {
         LazyColumn(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(MediumPadding1),
             contentPadding = PaddingValues(all = ExtraSmallPadding2)
         ) {

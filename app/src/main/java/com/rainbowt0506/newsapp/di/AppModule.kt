@@ -13,9 +13,12 @@ import com.rainbowt0506.newsapp.domain.repository.NewsRepository
 import com.rainbowt0506.newsapp.domain.usecases.app_entry.AppEntryUseCases
 import com.rainbowt0506.newsapp.domain.usecases.app_entry.ReadAppEntry
 import com.rainbowt0506.newsapp.domain.usecases.app_entry.SaveAppEntry
+import com.rainbowt0506.newsapp.domain.usecases.news.DeleteArticle
 import com.rainbowt0506.newsapp.domain.usecases.news.GetNews
 import com.rainbowt0506.newsapp.domain.usecases.news.NewsUseCase
 import com.rainbowt0506.newsapp.domain.usecases.news.SearchNews
+import com.rainbowt0506.newsapp.domain.usecases.news.SelectArticles
+import com.rainbowt0506.newsapp.domain.usecases.news.UpsertArticle
 import com.rainbowt0506.newsapp.util.Constants.BASE_URL
 import com.rainbowt0506.newsapp.util.Constants.NEWS_DATABASE_NAME
 import dagger.Module
@@ -65,14 +68,18 @@ object AppModule {
     @Provides
     @Singleton
     fun provideNewsUseCases(
-        newsRepository: NewsRepository
+        newsRepository: NewsRepository,
+        newsDao: NewsDao
     ): NewsUseCase {
         return NewsUseCase(
             getNews = GetNews(newsRepository),
-            searchNews = SearchNews(newsRepository)
+            searchNews = SearchNews(newsRepository),
+            upsertArticle = UpsertArticle(newsDao),
+            deleteArticle = DeleteArticle(newsDao),
+            selectArticles = SelectArticles(newsDao)
         )
     }
-    
+
     @Provides
     @Singleton
     fun provideNewsDatabase(
