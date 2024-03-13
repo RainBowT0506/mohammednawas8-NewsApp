@@ -17,6 +17,7 @@ import com.rainbowt0506.newsapp.domain.usecases.news.DeleteArticle
 import com.rainbowt0506.newsapp.domain.usecases.news.GetNews
 import com.rainbowt0506.newsapp.domain.usecases.news.NewsUseCase
 import com.rainbowt0506.newsapp.domain.usecases.news.SearchNews
+import com.rainbowt0506.newsapp.domain.usecases.news.SelectArticle
 import com.rainbowt0506.newsapp.domain.usecases.news.SelectArticles
 import com.rainbowt0506.newsapp.domain.usecases.news.UpsertArticle
 import com.rainbowt0506.newsapp.util.Constants.BASE_URL
@@ -62,21 +63,22 @@ object AppModule {
     @Provides
     @Singleton
     fun provideNewsRepository(
-        newsApi: NewsApi
-    ): NewsRepository = NewsRepositoryImpl(newsApi)
+        newsApi: NewsApi,
+        newsDao: NewsDao
+    ): NewsRepository = NewsRepositoryImpl(newsApi, newsDao)
 
     @Provides
     @Singleton
     fun provideNewsUseCases(
-        newsRepository: NewsRepository,
-        newsDao: NewsDao
+        newsRepository: NewsRepository
     ): NewsUseCase {
         return NewsUseCase(
             getNews = GetNews(newsRepository),
             searchNews = SearchNews(newsRepository),
-            upsertArticle = UpsertArticle(newsDao),
-            deleteArticle = DeleteArticle(newsDao),
-            selectArticles = SelectArticles(newsDao)
+            upsertArticle = UpsertArticle(newsRepository),
+            deleteArticle = DeleteArticle(newsRepository),
+            selectArticles = SelectArticles(newsRepository),
+            selectArticle = SelectArticle(newsRepository),
         )
     }
 

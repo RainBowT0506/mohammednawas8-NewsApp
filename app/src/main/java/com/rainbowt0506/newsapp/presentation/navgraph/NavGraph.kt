@@ -13,6 +13,7 @@ import com.rainbowt0506.newsapp.presentation.bookmark.BookmarkScreen
 import com.rainbowt0506.newsapp.presentation.bookmark.BookmarkViewModel
 import com.rainbowt0506.newsapp.presentation.home.HomeScreen
 import com.rainbowt0506.newsapp.presentation.home.HomeViewModel
+import com.rainbowt0506.newsapp.presentation.news_navigator.NewsNavigator
 import com.rainbowt0506.newsapp.presentation.onboarding.OnBoardingScreen
 import com.rainbowt0506.newsapp.presentation.onboarding.OnBoardingViewModel
 import com.rainbowt0506.newsapp.presentation.search.SearchScreen
@@ -44,8 +45,7 @@ fun NavGraph(
             startDestination = Route.NewsNavigatorScreen.route
         ) {
             composable(route = Route.NewsNavigatorScreen.route) {
-                val viewModel: BookmarkViewModel = hiltViewModel()
-                BookmarkScreen(state = viewModel.state.value, navigate = {})
+                NewsNavigator()
             }
         }
     }
