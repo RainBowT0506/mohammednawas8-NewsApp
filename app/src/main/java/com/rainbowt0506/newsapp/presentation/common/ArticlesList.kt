@@ -3,7 +3,7 @@ package com.rainbowt0506.newsapp.presentation.common
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
@@ -13,7 +13,7 @@ import androidx.paging.compose.LazyPagingItems
 import com.rainbowt0506.newsapp.domain.model.Article
 import com.rainbowt0506.newsapp.presentation.Dimens.ExtraSmallPadding2
 import com.rainbowt0506.newsapp.presentation.Dimens.MediumPadding1
-import kotlin.contracts.SimpleEffect
+import com.rainbowt0506.newsapp.presentation.home.components.ArticleCard
 
 @Composable
 fun ArticlesList(
@@ -21,18 +21,24 @@ fun ArticlesList(
     articles: List<Article>,
     onClick: (Article) -> Unit
 ) {
+    if (articles.isEmpty()) {
+        EmptyScreen()
+    }
     LazyColumn(
-        modifier = modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxSize(),
         verticalArrangement = Arrangement.spacedBy(MediumPadding1),
         contentPadding = PaddingValues(all = ExtraSmallPadding2)
     ) {
-        items(count = articles.size) {
-            val article = articles[it]
-            ArticleCard(article = article, onClick = { onClick(article) })
+        items(
+            count = articles.size,
+        ) {
+            articles[it].let { article ->
+                ArticleCard(article = article, onClick = { onClick(article) })
+            }
         }
     }
-}
 
+}
 
 @Composable
 fun ArticlesList(
@@ -40,16 +46,21 @@ fun ArticlesList(
     articles: LazyPagingItems<Article>,
     onClick: (Article) -> Unit
 ) {
-    val handlePagingResult = handlePagingResult(articles = articles)
+
+    val handlePagingResult = handlePagingResult(articles)
+
+
     if (handlePagingResult) {
         LazyColumn(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier.fillMaxSize(),
             verticalArrangement = Arrangement.spacedBy(MediumPadding1),
             contentPadding = PaddingValues(all = ExtraSmallPadding2)
         ) {
-            items(count = articles.itemCount) {
-                articles[it]?.let {
-                    ArticleCard(article = it, onClick = { onClick(it) })
+            items(
+                count = articles.itemCount,
+            ) {
+                articles[it]?.let { article ->
+                    ArticleCard(article = article, onClick = { onClick(article) })
                 }
             }
         }
@@ -57,9 +68,7 @@ fun ArticlesList(
 }
 
 @Composable
-fun handlePagingResult(
-    articles: LazyPagingItems<Article>,
-): Boolean {
+fun handlePagingResult(articles: LazyPagingItems<Article>): Boolean {
     val loadState = articles.loadState
     val error = when {
         loadState.refresh is LoadState.Error -> loadState.refresh as LoadState.Error
@@ -75,7 +84,7 @@ fun handlePagingResult(
         }
 
         error != null -> {
-            EmptyScreen()
+            EmptyScreen(error = error)
             false
         }
 

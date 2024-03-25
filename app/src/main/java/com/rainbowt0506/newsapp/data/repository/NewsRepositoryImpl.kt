@@ -1,18 +1,18 @@
-package com.rainbowt0506.newsapp.data.remote
+package com.rainbowt0506.newsapp.data.repository
 
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.rainbowt0506.newsapp.data.local.NewsDao
-import com.rainbowt0506.newsapp.data.remote.dto.NewsApi
-import com.rainbowt0506.newsapp.data.remote.dto.NewsPagingSource
-import com.rainbowt0506.newsapp.data.remote.dto.SearchNewsPagingSource
+import com.rainbowt0506.newsapp.data.remote.NewsApi
+import com.rainbowt0506.newsapp.data.remote.NewsPagingSource
+import com.rainbowt0506.newsapp.data.remote.SearchNewsPagingSource
 import com.rainbowt0506.newsapp.domain.model.Article
 import com.rainbowt0506.newsapp.domain.repository.NewsRepository
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.onEach
+import javax.inject.Inject
 
-class NewsRepositoryImpl(
+class NewsRepositoryImpl @Inject constructor(
     private val newsApi: NewsApi,
     private val newsDao: NewsDao
 ) : NewsRepository {
@@ -22,8 +22,7 @@ class NewsRepositoryImpl(
             pagingSourceFactory = {
                 NewsPagingSource(
                     newsApi = newsApi,
-                    sources = sources.joinToString(separator = ",")
-                )
+                    sources = sources.joinToString(separator = ","))
             }
         ).flow
     }
@@ -49,11 +48,11 @@ class NewsRepositoryImpl(
         newsDao.delete(article)
     }
 
-    override fun selectArticles(): Flow<List<Article>> {
-        return newsDao.getArticle()
+    override fun getArticles(): Flow<List<Article>> {
+        return newsDao.getArticles()
     }
 
-    override suspend fun selectArticle(url: String): Article? {
-        return newsDao.getArticle(url)
+    override suspend fun getArticle(url: String): Article? {
+        return newsDao.getArticle(url = url)
     }
 }

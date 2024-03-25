@@ -6,7 +6,7 @@ import com.rainbowt0506.newsapp.R
 data class Page(
     val title: String,
     val description: String,
-    @DrawableRes val image: Int
+    @DrawableRes val image: Int,
 )
 
 val pages = listOf(

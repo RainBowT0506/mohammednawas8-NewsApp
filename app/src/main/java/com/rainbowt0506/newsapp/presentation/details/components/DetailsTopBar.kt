@@ -1,10 +1,8 @@
 package com.rainbowt0506.newsapp.presentation.details.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -26,25 +24,27 @@ fun DetailsTopBar(
     onBrowsingClick: () -> Unit,
     onShareClick: () -> Unit,
     onBookMarkClick: () -> Unit,
-    onBackClick: () -> Unit
+    onBackClick: () -> Unit,
 ) {
+
     TopAppBar(
         modifier = Modifier.fillMaxWidth(),
         colors = TopAppBarDefaults.mediumTopAppBarColors(
             containerColor = Color.Transparent,
             actionIconContentColor = colorResource(id = R.color.body),
-            navigationIconContentColor = colorResource(id = R.color.body)
+            navigationIconContentColor = colorResource(id = R.color.body),
         ),
         title = {},
         navigationIcon = {
             IconButton(onClick = onBackClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_back_arrow),
-                    contentDescription = null
+                    contentDescription = null,
                 )
             }
         },
         actions = {
+
             IconButton(onClick = onBookMarkClick) {
                 Icon(
                     painter = painterResource(id = R.drawable.ic_bookmark),
@@ -63,20 +63,20 @@ fun DetailsTopBar(
                     contentDescription = null
                 )
             }
-        }
+        },
     )
 }
 
 @Preview(showBackground = true)
 @Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
 @Composable
-fun DetailsTopBarPreview(){
-    NewsAppTheme() {
+fun DetailsTopBarPreview() {
+    NewsAppTheme(dynamicColor = false) {
         DetailsTopBar(
-            onBrowsingClick = { /*TODO*/ },
             onShareClick = { /*TODO*/ },
-            onBookMarkClick = { /*TODO*/ }) {
-            
+            onBookMarkClick = { /*TODO*/ },
+            onBrowsingClick = {}) {
+
         }
     }
 }

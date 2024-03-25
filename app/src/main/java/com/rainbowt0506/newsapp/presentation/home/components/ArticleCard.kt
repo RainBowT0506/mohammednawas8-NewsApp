@@ -1,4 +1,4 @@
-package com.rainbowt0506.newsapp.presentation.common
+package com.rainbowt0506.newsapp.presentation.home.components
 
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.clickable
@@ -39,11 +39,14 @@ import com.rainbowt0506.newsapp.ui.theme.NewsAppTheme
 fun ArticleCard(
     modifier: Modifier = Modifier,
     article: Article,
-    onClick: () -> Unit
+    onClick: (() -> Unit)? = null
 ) {
-    val context = LocalContext.current
 
-    Row(modifier = modifier.clickable { onClick() }) {
+    val context = LocalContext.current
+    Row(
+        modifier = modifier.clickable { onClick?.invoke() },
+
+        ) {
         AsyncImage(
             modifier = Modifier
                 .size(ArticleCardSize)
@@ -52,7 +55,6 @@ fun ArticleCard(
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
-
         Column(
             verticalArrangement = Arrangement.SpaceAround,
             modifier = Modifier
@@ -61,34 +63,30 @@ fun ArticleCard(
         ) {
             Text(
                 text = article.title,
-                style = MaterialTheme.typography.bodyMedium,
+                style = MaterialTheme.typography.bodyMedium.copy(),
                 color = colorResource(id = R.color.text_title),
                 maxLines = 2,
                 overflow = TextOverflow.Ellipsis
             )
-
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
                 Text(
                     text = article.source.name,
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
+                    style = MaterialTheme.typography.labelSmall.copy(fontWeight = FontWeight.Bold),
                     color = colorResource(id = R.color.body)
                 )
-
                 Spacer(modifier = Modifier.width(ExtraSmallPadding2))
                 Icon(
-                    painter = painterResource(id = R.drawable.ic_time), contentDescription = null,
+                    painter = painterResource(id = R.drawable.ic_time),
+                    contentDescription = null,
                     modifier = Modifier.size(SmallIconSize),
                     tint = colorResource(id = R.color.body)
                 )
-
-                Spacer(modifier = Modifier.width(ExtraSmallPadding2))
+                Spacer(modifier = Modifier.width(ExtraSmallPadding))
                 Text(
                     text = article.publishedAt,
-                    style = MaterialTheme.typography.labelMedium.copy(
-                        fontWeight = FontWeight.Bold
-                    ),
+                    style = MaterialTheme.typography.labelSmall,
                     color = colorResource(id = R.color.body)
                 )
             }

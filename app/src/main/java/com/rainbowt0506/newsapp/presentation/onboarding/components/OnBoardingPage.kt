@@ -26,27 +26,27 @@ import com.rainbowt0506.newsapp.ui.theme.NewsAppTheme
 @Composable
 fun OnBoardingPage(
     modifier: Modifier = Modifier,
-    page: Page
+    page: Page,
 ) {
     Column(modifier = modifier) {
         Image(
             modifier = Modifier
                 .fillMaxWidth()
-                .fillMaxHeight(fraction = 0.6f),
+                .fillMaxHeight(0.60f),
             painter = painterResource(id = page.image),
             contentDescription = null,
             contentScale = ContentScale.Crop
         )
         Spacer(modifier = Modifier.height(MediumPadding1))
         Text(
-            text = page.title,
             modifier = Modifier.padding(horizontal = MediumPadding2),
+            text = page.title,
             style = MaterialTheme.typography.displaySmall.copy(fontWeight = FontWeight.Bold),
             color = colorResource(id = R.color.display_small)
         )
         Text(
-            text = page.description,
             modifier = Modifier.padding(horizontal = MediumPadding2),
+            text = page.description,
             style = MaterialTheme.typography.bodyMedium,
             color = colorResource(id = R.color.text_medium)
         )

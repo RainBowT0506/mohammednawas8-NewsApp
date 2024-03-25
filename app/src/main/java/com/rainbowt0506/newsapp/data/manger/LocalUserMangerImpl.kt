@@ -1,5 +1,6 @@
 package com.rainbowt0506.newsapp.data.manger
 
+import android.app.Application
 import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
@@ -11,24 +12,28 @@ import com.rainbowt0506.newsapp.util.Constants
 import com.rainbowt0506.newsapp.util.Constants.USER_SETTINGS
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class LocalUserMangerImpl(private val context: Context) : LocalUserManger {
+class LocalUserMangerImpl @Inject constructor(private val application: Application) :
+    LocalUserManger {
     override suspend fun saveAppEntry() {
-        context.dataStore.edit { settings ->
-            settings[PreferencesKeys.APP_ENTRY] = true
+        application.dataStore.edit { settings ->
+            settings[PreferenceKeys.APP_ENTRY] = true
         }
     }
 
     override fun readAppEntry(): Flow<Boolean> {
-        return context.dataStore.data.map { preferences ->
-            preferences[PreferencesKeys.APP_ENTRY] ?: false
+        return application.dataStore.data.map { preferences ->
+            preferences[PreferenceKeys.APP_ENTRY] ?: false
         }
     }
 
 }
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = USER_SETTINGS)
+private val readOnlyProperty = preferencesDataStore(name = USER_SETTINGS)
 
-private object PreferencesKeys {
+private val Context.dataStore: DataStore<Preferences> by readOnlyProperty
+
+private object PreferenceKeys {
     val APP_ENTRY = booleanPreferencesKey(name = Constants.APP_ENTRY)
 }

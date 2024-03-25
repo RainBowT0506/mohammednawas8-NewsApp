@@ -2,7 +2,6 @@ package com.rainbowt0506.newsapp.presentation.search
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -13,7 +12,6 @@ import com.rainbowt0506.newsapp.domain.model.Article
 import com.rainbowt0506.newsapp.presentation.Dimens.MediumPadding1
 import com.rainbowt0506.newsapp.presentation.common.ArticlesList
 import com.rainbowt0506.newsapp.presentation.common.SearchBar
-import com.rainbowt0506.newsapp.presentation.navgraph.Route
 
 @Composable
 fun SearchScreen(
@@ -24,28 +22,24 @@ fun SearchScreen(
 
     Column(
         modifier = Modifier
-            .padding(
-                top = MediumPadding1,
-                start = MediumPadding1,
-                end = MediumPadding1
-            )
+            .padding(top = MediumPadding1, start = MediumPadding1, end = MediumPadding1)
             .statusBarsPadding()
-            .fillMaxSize()
     ) {
-        SearchBar(text = state.searchQuery,
+        SearchBar(
+            text = state.searchQuery,
             readOnly = false,
             onValueChange = { event(SearchEvent.UpdateSearchQuery(it)) },
-            onSearch = { event(SearchEvent.SearchNews) })
-
+            onSearch = {
+                event(SearchEvent.SearchNews)
+            }
+        )
         Spacer(modifier = Modifier.height(MediumPadding1))
-
         state.articles?.let {
             val articles = it.collectAsLazyPagingItems()
             ArticlesList(
                 articles = articles,
-                onClick = {
-                    navigateToDetails(it)
-                })
+                onClick = navigateToDetails
+            )
         }
     }
 }

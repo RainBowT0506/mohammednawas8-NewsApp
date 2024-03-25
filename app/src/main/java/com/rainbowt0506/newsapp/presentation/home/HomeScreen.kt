@@ -27,7 +27,6 @@ import com.rainbowt0506.newsapp.domain.model.Article
 import com.rainbowt0506.newsapp.presentation.Dimens.MediumPadding1
 import com.rainbowt0506.newsapp.presentation.common.ArticlesList
 import com.rainbowt0506.newsapp.presentation.common.SearchBar
-import com.rainbowt0506.newsapp.presentation.navgraph.Route
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -36,12 +35,13 @@ fun HomeScreen(
     navigateToSearch: () -> Unit,
     navigateToDetails: (Article) -> Unit
 ) {
+
     val titles by remember {
         derivedStateOf {
             if (articles.itemCount > 10) {
-                articles.itemSnapshotList.items.slice(
-                    IntRange(start = 0, endInclusive = 0)
-                ).joinToString(separator = " \uD83d\uDFE5") { it.title }
+                articles.itemSnapshotList.items
+                    .slice(IntRange(start = 0, endInclusive = 9))
+                    .joinToString(separator = " \uD83D\uDFE5 ") { it.title }
             } else {
                 ""
             }
@@ -66,14 +66,14 @@ fun HomeScreen(
         Spacer(modifier = Modifier.height(MediumPadding1))
 
         SearchBar(
-            modifier = Modifier.padding(horizontal = MediumPadding1),
+            modifier = Modifier
+                .padding(horizontal = MediumPadding1)
+                .fillMaxWidth(),
             text = "",
             readOnly = true,
             onValueChange = {},
-            onClick = {
-                navigateToSearch()
-            },
-            onSearch = {}
+            onSearch = {},
+            onClick = navigateToSearch
         )
 
         Spacer(modifier = Modifier.height(MediumPadding1))
@@ -82,8 +82,7 @@ fun HomeScreen(
             text = titles, modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = MediumPadding1)
-                .basicMarquee(),
-            fontSize = 12.sp,
+                .basicMarquee(), fontSize = 12.sp,
             color = colorResource(id = R.color.placeholder)
         )
 
@@ -92,9 +91,7 @@ fun HomeScreen(
         ArticlesList(
             modifier = Modifier.padding(horizontal = MediumPadding1),
             articles = articles,
-            onClick = {
-                navigateToDetails(it)
-            }
+            onClick = navigateToDetails
         )
     }
 }

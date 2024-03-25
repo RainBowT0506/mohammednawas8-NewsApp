@@ -3,6 +3,7 @@ package com.rainbowt0506.newsapp.presentation.details
 import android.content.Intent
 import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import android.net.Uri
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -14,6 +15,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -29,15 +31,30 @@ import com.rainbowt0506.newsapp.presentation.Dimens.ArticleImageHeight
 import com.rainbowt0506.newsapp.presentation.Dimens.MediumPadding1
 import com.rainbowt0506.newsapp.presentation.details.components.DetailsTopBar
 import com.rainbowt0506.newsapp.ui.theme.NewsAppTheme
+import com.rainbowt0506.newsapp.util.UIComponent
 
 
 @Composable
 fun DetailsScreen(
     article: Article,
     event: (DetailsEvent) -> Unit,
+    sideEffect: UIComponent?,
     navigateUp: () -> Unit
 ) {
     val context = LocalContext.current
+
+    LaunchedEffect(key1 = sideEffect) {
+        sideEffect?.let {
+            when (sideEffect) {
+                is UIComponent.Toast -> {
+                    Toast.makeText(context, sideEffect.message, Toast.LENGTH_SHORT).show()
+                    event(DetailsEvent.RemoveSideEffect)
+                }
+
+                else -> Unit
+            }
+        }
+    }
 
     Column(
         modifier = Modifier
@@ -62,7 +79,9 @@ fun DetailsScreen(
                     }
                 }
             },
-            onBookMarkClick = { event(DetailsEvent.UpsertDeleteArticle(article)) },
+            onBookMarkClick = {
+                event(DetailsEvent.UpsertDeleteArticle(article))
+            },
             onBackClick = navigateUp
         )
 
@@ -85,24 +104,24 @@ fun DetailsScreen(
                         .clip(MaterialTheme.shapes.medium),
                     contentScale = ContentScale.Crop
                 )
-
                 Spacer(modifier = Modifier.height(MediumPadding1))
-
                 Text(
                     text = article.title,
                     style = MaterialTheme.typography.displaySmall,
-                    color = colorResource(id = R.color.text_title)
+                    color = colorResource(
+                        id = R.color.text_title
+                    )
                 )
-
                 Text(
                     text = article.content,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = colorResource(id = R.color.body)
+                    color = colorResource(
+                        id = R.color.body
+                    )
                 )
             }
         }
     }
-
 }
 
 @Preview(showBackground = true)
@@ -122,6 +141,7 @@ fun DetailsScreenPreview() {
                 urlToImage = "https://cdn.vox-cdn.com/thumbor/H677yLcdetO3X15Cqi-RGvXVgvc=/0x0:2040x1360/1200x628/filters:focal(1020x680:1021x681)/cdn.vox-cdn.com/uploads/chorus_asset/file/23951261/VRG_Illo_N_Barclay_5_apple.jpg"
             ),
             event = {},
+            sideEffect = null
         ) {
 
         }

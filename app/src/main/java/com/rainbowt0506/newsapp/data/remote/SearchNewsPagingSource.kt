@@ -1,4 +1,4 @@
-package com.rainbowt0506.newsapp.data.remote.dto
+package com.rainbowt0506.newsapp.data.remote
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
@@ -13,9 +13,9 @@ class SearchNewsPagingSource(
     private var totalNewsCount = 0
 
     override fun getRefreshKey(state: PagingState<Int, Article>): Int? {
-        return state.anchorPosition?.let { anchorPosition ->
-            val anchorPage = state.closestPageToPosition(anchorPosition)
-            anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
+        return state.anchorPosition?.let { anchorPage ->
+            val page = state.closestPageToPosition(anchorPage)
+            page?.nextKey?.minus(1) ?: page?.prevKey?.plus(1)
         }
     }
 
@@ -33,9 +33,7 @@ class SearchNewsPagingSource(
             )
         } catch (e: Exception) {
             e.printStackTrace()
-            LoadResult.Error(
-                throwable = e
-            )
+            LoadResult.Error(throwable = e)
         }
     }
 }

@@ -14,7 +14,6 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.colorResource
@@ -29,10 +28,9 @@ import com.rainbowt0506.newsapp.ui.theme.NewsAppTheme
 @Composable
 fun NewsBottomNavigation(
     items: List<BottomNavigationItem>,
-    selected: Int,
+    selectedItem: Int,
     onItemClick: (Int) -> Unit
 ) {
-
     NavigationBar(
         modifier = Modifier.fillMaxWidth(),
         containerColor = MaterialTheme.colorScheme.background,
@@ -40,13 +38,14 @@ fun NewsBottomNavigation(
     ) {
         items.forEachIndexed { index, item ->
             NavigationBarItem(
-                selected = index == selected,
+                selected = index == selectedItem,
                 onClick = { onItemClick(index) },
                 icon = {
                     Column(horizontalAlignment = CenterHorizontally) {
                         Icon(
-                            painter = painterResource(id = item.icon), contentDescription = null,
-                            modifier = Modifier.size(IconSize)
+                            painter = painterResource(id = item.icon),
+                            contentDescription = null,
+                            modifier = Modifier.size(IconSize),
                         )
                         Spacer(modifier = Modifier.height(ExtraSmallPadding2))
                         Text(text = item.text, style = MaterialTheme.typography.labelSmall)
@@ -58,7 +57,7 @@ fun NewsBottomNavigation(
                     unselectedIconColor = colorResource(id = R.color.body),
                     unselectedTextColor = colorResource(id = R.color.body),
                     indicatorColor = MaterialTheme.colorScheme.background
-                )
+                ),
             )
         }
     }
@@ -80,7 +79,7 @@ fun NewsBottomNavigationPreview() {
                 BottomNavigationItem(icon = R.drawable.ic_search, text = "Search"),
                 BottomNavigationItem(icon = R.drawable.ic_bookmark, text = "Bookmark")
             ),
-            selected = 0,
+            selectedItem = 0,
             onItemClick = {}
         )
     }

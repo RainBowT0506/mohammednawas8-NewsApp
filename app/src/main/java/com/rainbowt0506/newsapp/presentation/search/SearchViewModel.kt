@@ -6,22 +6,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.cachedIn
-import com.rainbowt0506.newsapp.domain.usecases.news.NewsUseCase
+import com.rainbowt0506.newsapp.domain.usecases.news.SearchNews
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
 class SearchViewModel @Inject constructor(
-    private val newsUseCase: NewsUseCase
+    private val searchNewsUseCase: SearchNews
 ) : ViewModel() {
 
-    private val _state = mutableStateOf(SearchState())
+    private var _state = mutableStateOf(SearchState())
     val state: State<SearchState> = _state
+
 
     fun onEvent(event: SearchEvent) {
         when (event) {
             is SearchEvent.UpdateSearchQuery -> {
-                _state.value = state.value.copy(searchQuery = event.searchQuery)
+                _state.value = _state.value.copy(searchQuery = event.searchQuery)
             }
 
             is SearchEvent.SearchNews -> {
@@ -31,10 +32,12 @@ class SearchViewModel @Inject constructor(
     }
 
     private fun searchNews() {
-        val articles = newsUseCase.searchNews(
-            searchQuery = state.value.searchQuery,
+        val articles = searchNewsUseCase(
+            searchQuery = _state.value.searchQuery,
             sources = listOf("bbc-news", "abc-news", "al-jazeera-english")
         ).cachedIn(viewModelScope)
-        _state.value = state.value.copy(articles = articles)
+        _state.value = _state.value.copy(articles = articles)
     }
+
+
 }

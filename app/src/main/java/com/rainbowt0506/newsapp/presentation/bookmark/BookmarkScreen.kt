@@ -2,7 +2,7 @@ package com.rainbowt0506.newsapp.presentation.bookmark
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -16,7 +16,6 @@ import com.rainbowt0506.newsapp.R
 import com.rainbowt0506.newsapp.domain.model.Article
 import com.rainbowt0506.newsapp.presentation.Dimens.MediumPadding1
 import com.rainbowt0506.newsapp.presentation.common.ArticlesList
-import com.rainbowt0506.newsapp.presentation.navgraph.Route
 
 @Composable
 fun BookmarkScreen(
@@ -25,22 +24,24 @@ fun BookmarkScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .statusBarsPadding()
-            .padding(
-                top = MediumPadding1, start = MediumPadding1, end = MediumPadding1
-            )
+            .padding(top = MediumPadding1, start = MediumPadding1, end = MediumPadding1)
     ) {
+
         Text(
             text = "Bookmark",
             style = MaterialTheme.typography.displayMedium.copy(fontWeight = FontWeight.Bold),
-            color = colorResource(id = R.color.text_title)
+            color = colorResource(
+                id = R.color.text_title
+            )
         )
 
         Spacer(modifier = Modifier.height(MediumPadding1))
 
         ArticlesList(
             articles = state.articles,
-            onClick = { navigateToDetails(it) })
+            onClick = navigateToDetails
+        )
     }
 }
